@@ -22,10 +22,10 @@ if [ -n "$(command -v yum)" ]; then
     PKG_MGR_CMD=$(which yum)
     PKG_MGR="yum"
 elif [ -n "$(command -v zypper)" ]; then
-    PKG_MGR=$(which zypper)
+    PKG_MGR_CMD=$(which zypper)
     PKG_MGR="zypper"
 elif [ -n "$(command -v apt-get)" ]; then
-    PKG_MGR=$(which apt-get).
+    PKG_MGR_CMD=$(which apt-get)
     PKG_MGR="apt-get"
 else
     echo "Not supported package manager"
