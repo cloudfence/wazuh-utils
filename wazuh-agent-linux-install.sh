@@ -11,7 +11,7 @@
 
 WAZUH_MANAGER="$1"
 
-if [ -z "$WAZUH_MNGR" ]; then
+if [ -z "$WAZUH_MANAGER" ]; then
     echo "usage: $0 <Wazuh Manager IP address>"
     exit 1
 fi
