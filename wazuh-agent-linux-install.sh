@@ -10,12 +10,12 @@
 # Foundation.
 
 WAZUH_MANAGER="$1"
+WAZUH_PASSWORD="$2"
 
 if [ -z "$WAZUH_MANAGER" ]; then
     echo "usage: $0 <Wazuh Manager IP address>"
     exit 1
 fi
-
 
 # check which package manager this system uses
 if [ -n "$(command -v yum)" ]; then
@@ -79,6 +79,13 @@ $PKG_MGR_CMD install wazuh-agent
 
 # change configuration
 sed -i "s/MANAGER_IP/${WAZUH_MANAGER}/" /var/ossec/etc/ossec.conf
+
+# if specified password 
+if [ ! -z "WAZUH_PASSWORD" ]; then
+    echo "$WAZUH_PASSWORD" > /var/ossec/etc/authd.pass
+    chmod 644 /var/ossec/etc/authd.pass
+    chown root:wazuh /var/ossec/etc/authd.pass
+fi
 
 if [ -n "$(command -v systemctl)" ]; then
     systemctl daemon-reload
