@@ -77,6 +77,9 @@ esac
 # Preceed to installation
 $PKG_MGR_CMD install wazuh-agent
 
+# change configuration
+sed -i "s/MANAGER_IP/${WAZUH_MANAGER}/" /var/ossec/etc/ossec.conf
+
 if [ -n "$(command -v systemctl)" ]; then
     systemctl daemon-reload
     systemctl enable wazuh-agent
