@@ -87,6 +87,9 @@ if [ ! -z "WAZUH_PASSWORD" ]; then
     chown root:wazuh /var/ossec/etc/authd.pass
 fi
 
+# enable remote commands from Wazuh Manager - COMMENT IF YOU DON'T WANT THIS!!
+echo "sca.remote_commands=1" >> /var/ossec/etc/local_internal_options.conf
+
 if [ -n "$(command -v systemctl)" ]; then
     systemctl daemon-reload
     systemctl enable wazuh-agent
