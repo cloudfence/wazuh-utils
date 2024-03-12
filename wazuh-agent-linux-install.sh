@@ -12,8 +12,8 @@
 WAZUH_MANAGER="$1"
 WAZUH_PASSWORD="$2"
 
-if [ -z "$WAZUH_MANAGER" ]; then
-    echo "usage: $0 <Wazuh Manager IP address>"
+if [ "$#" -ne 2 ]; then
+    echo "usage: $0 <Wazuh Manager IP address> <Wazuh Manager Password>"
     exit 1
 fi
 
