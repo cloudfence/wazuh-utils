@@ -9,11 +9,15 @@
 # License (version 2) as published by the FSF - Free Software
 # Foundation.
 
-WAZUH_MANAGER="$1"
-WAZUH_PASSWORD="$2"
+#prompt user for the required info
+echo -n "Wazuh Manager Address: "
+read WAZUH_MANAGER
+echo -n "Wazuh Manager Registration Key: "
+WAZUH_PASSWORD
 
-if [ "$#" -ne 2 ]; then
-    echo "usage: $0 <Wazuh Manager IP address> <Wazuh Manager Password>"
+# Check if both parameters are provided
+if [ -z "$WAZUH_MANAGER" ] || [ -z "$WAZUH_PASSWORD" ]; then
+    echo "Both parameters are required."
     exit 1
 fi
 
