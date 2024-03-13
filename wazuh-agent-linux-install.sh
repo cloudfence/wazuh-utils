@@ -13,7 +13,7 @@
 echo -n "Wazuh Manager Address: "
 read WAZUH_MANAGER
 echo -n "Wazuh Manager Registration Key: "
-WAZUH_PASSWORD
+read WAZUH_PASSWORD
 
 # Check if both parameters are provided
 if [ -z "$WAZUH_MANAGER" ] || [ -z "$WAZUH_PASSWORD" ]; then
