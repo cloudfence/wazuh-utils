@@ -56,7 +56,9 @@ registration(){
     
     #run install
     installer -pkg ${pkg_file} -target /
-    /Library/Ossec/bin/agent-auth -m "$manager_address" -p $reg_password -g $agent_group
+    /Library/Ossec/bin/agent-auth -m "$manager_address" -P $reg_password -G $agent_group
+    # Save the registration password to the authd.pass file
+    echo $reg_password | sudo tee /Library/Ossec/etc/authd.pass > /dev/null
     # Update the ossec.conf file with the manager IP
     sudo sed -i '' "s|<address>MANAGER_IP</address>|<address>${manager_address}</address>|g" /Library/Ossec/etc/ossec.conf
     # Start the Wazuh agent service
