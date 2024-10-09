@@ -23,6 +23,9 @@
 #    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 #    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 #    POSSIBILITY OF SUCH DAMAGE.
+
+#install and register agent
+registration(){
 #find mac CPU arch
 arch=$(uname -m)
 #set to your preferred version
@@ -44,8 +47,6 @@ else
     exit 1
 fi
 
-#install and register agent
-registration(){
     echo "$WAZUH_MANAGER" > /tmp/wazuh_envs
     echo "$WAZUH_REGISTRATION_PASSWORD" >> /tmp/wazuh_envs
     echo "$WAZUH_AGENT_GROUP" >> /tmp/wazuh_envs
