@@ -65,7 +65,7 @@ uninstall(){
 }
 
 # Update - Call functions to update FE
-case $FUNCTION in
+case $function in
     install)
         registration
     ;;
@@ -76,6 +76,8 @@ case $FUNCTION in
         uninstall
     ;;
     *)
-        echo "Usage $0: (install|unistall)
+        echo "Usage $0: (install|uninstall)"
     ;;
 esac
+
+function="$1"
