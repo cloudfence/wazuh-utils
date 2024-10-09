@@ -64,6 +64,8 @@ uninstall(){
     /usr/sbin/pkgutil --forget com.wazuh.pkg.wazuh-agent
 }
 
+#get arg
+function="$1"
 # Update - Call functions to update FE
 case $function in
     install)
@@ -79,5 +81,3 @@ case $function in
         echo "Usage $0: (install|uninstall)"
     ;;
 esac
-
-function="$1"
