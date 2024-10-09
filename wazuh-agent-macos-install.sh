@@ -28,12 +28,17 @@
 registration(){
 #find mac CPU arch
 arch=$(uname -m)
-#set to your preferred version
+#set to your preferred agent version
 version="4.7.5-1"
 # set Wazuh vars before running the script
 WAZUH_MANAGER=""
 WAZUH_REGISTRATION_PASSWORD=""
 WAZUH_AGENT_GROUP=""
+
+if [ -z "$WAZUH_MANAGER" ] && [ -z "$WAZUH_REGISTRATION_PASSWORD" ];then
+    echo "Please set the Wazuh Manager and Registration Password before try instaling agent"
+    exit 1
+fi 
 
 # intel or silicon
 if [ "$arch" == "x86_64" ];then
@@ -51,6 +56,7 @@ fi
     echo "$WAZUH_REGISTRATION_PASSWORD" >> /tmp/wazuh_envs
     echo "$WAZUH_AGENT_GROUP" >> /tmp/wazuh_envs
     installer -pkg ${pkg_file} -target /
+    /Library/Ossec/bin/wazuh-control start
 }
 
 #uninstall 
@@ -66,6 +72,13 @@ uninstall(){
 
 #get arg
 function="$1"
+
+# Check if the script is running with sudo/root privileges
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root. Please use sudo." 
+   exit 1
+fi
+
 # Update - Call functions to update FE
 case $function in
     install)
