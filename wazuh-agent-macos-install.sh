@@ -36,7 +36,7 @@ WAZUH_AGENT_GROUP=""
 if [ "$arch" == "x86_64" ];then
     pkg_file="wazuh-agent-${version}.arm64.pkg"
     curl -O https://packages.wazuh.com/4.x/macos/${pkg_file} 
-elif [ "$arch" == "arm64" ]];then
+elif [ "$arch" == "arm64" ];then
     pkg_file="wazuh-agent-${version}.arm64.pkg"
     curl -O https://packages.wazuh.com/4.x/macos/${pkg_file} 
 else
