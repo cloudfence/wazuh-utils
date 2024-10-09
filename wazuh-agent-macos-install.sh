@@ -26,36 +26,35 @@
 
 #install and register agent
 registration(){
-#find mac CPU arch
-arch=$(uname -m)
-#set to your preferred agent version
-version="4.7.5-1"
-# set Wazuh vars before running the script
-WAZUH_MANAGER=""
-WAZUH_REGISTRATION_PASSWORD=""
-WAZUH_AGENT_GROUP=""
+    #find mac CPU arch
+    arch=$(uname -m)
+    #set to your preferred agent version
+    version="4.7.5-1"
+    # set Wazuh vars before running the script
+    manager_address=""
+    reg_password=""
+    agent_group=""
 
-if [ -z "$WAZUH_MANAGER" ] && [ -z "$WAZUH_REGISTRATION_PASSWORD" ];then
-    echo "Please set the Wazuh Manager and Registration Password before try instaling agent"
-    exit 1
-fi 
+    if [ -z "$manager_address" ] && [ -z "$reg_password" ] && [ -z "$agent_group" ];then
+        echo "Please set the Wazuh Manager and Registration Password and Agent Group before try instaling agent"
+        exit 1
+    fi
 
-# intel or silicon
-if [ "$arch" == "x86_64" ];then
-    pkg_file="wazuh-agent-${version}.arm64.pkg"
-    curl -O https://packages.wazuh.com/4.x/macos/${pkg_file} 
-elif [ "$arch" == "arm64" ];then
-    pkg_file="wazuh-agent-${version}.arm64.pkg"
-    curl -O https://packages.wazuh.com/4.x/macos/${pkg_file} 
-else
-    echo "Unknown architecture: $arch"
-    exit 1
-fi
 
-    echo "$WAZUH_MANAGER" > /tmp/wazuh_envs
-    echo "$WAZUH_REGISTRATION_PASSWORD" >> /tmp/wazuh_envs
-    echo "$WAZUH_AGENT_GROUP" >> /tmp/wazuh_envs
-    installer -pkg ${pkg_file} -target /
+
+    # intel or silicon
+    if [ "$arch" == "x86_64" ];then
+        pkg_file="wazuh-agent-${version}.arm64.pkg"
+        curl -O https://packages.wazuh.com/4.x/macos/${pkg_file} 
+    elif [ "$arch" == "arm64" ];then
+        pkg_file="wazuh-agent-${version}.arm64.pkg"
+        curl -O https://packages.wazuh.com/4.x/macos/${pkg_file} 
+    else
+        echo "Unknown architecture: $arch"
+        exit 1
+    fi
+
+    WAZUH_MANAGER="$manager_address" WAZUH_REGISTRATION_PASSWORD="$reg_password" WAZUH_AGENT_GROUP="$agent_group" && installer -pkg ${pkg_file} -target /
     /Library/Ossec/bin/wazuh-control start
 }
 
