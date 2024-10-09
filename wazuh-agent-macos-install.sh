@@ -53,9 +53,8 @@ registration(){
         echo "Unknown architecture: $arch"
         exit 1
     fi
-
-    WAZUH_MANAGER="$manager_address" WAZUH_REGISTRATION_PASSWORD="$reg_password" WAZUH_AGENT_GROUP="$agent_group" && installer -pkg ${pkg_file} -target /
-    /Library/Ossec/bin/wazuh-control start
+    #run install
+    echo WAZUH_MANAGER="$manager_address" && WAZUH_REGISTRATION_PASSWORD="$reg_password" && WAZUH_AGENT_GROUP="$agent_group" > /tmp/wazuh_envs && installer -pkg ${pkg_file} -target /
 }
 
 #uninstall 
