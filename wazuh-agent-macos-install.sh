@@ -53,8 +53,14 @@ registration(){
         echo "Unknown architecture: $arch"
         exit 1
     fi
+    
     #run install
-    echo WAZUH_MANAGER="$manager_address" && WAZUH_REGISTRATION_PASSWORD="$reg_password" && WAZUH_AGENT_GROUP="$agent_group" > /tmp/wazuh_envs && installer -pkg ${pkg_file} -target /
+    installer -pkg ${pkg_file} -target /
+    /Library/Ossec/bin/agent-auth -m "$manager_address" -p $reg_password -g $agent_group
+    # Update the ossec.conf file with the manager IP
+    sudo sed -i '' "s|<address>MANAGER_IP</address>|<address>${manager_address}</address>|g" /Library/Ossec/etc/ossec.conf
+    # Start the Wazuh agent service
+    /Library/Ossec/bin/wazuh-control start
 }
 
 #uninstall 
