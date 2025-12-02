@@ -1,6 +1,6 @@
 #!/bin/bash
 #    Copyright (C) 2024 Cloudfence
-#    Copyright (C) 2015-2024 Wazuh Inc
+#    Copyright (C) 2015-2025 Wazuh Inc
 #    All rights reserved.
 #
 #    Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@ registration(){
     #find mac CPU arch
     arch=$(uname -m)
     #set to your preferred agent version
-    version="4.7.5-1"
+    version="4.12.0-1"
     # set Wazuh vars before running the script
     manager_address=""
     reg_password=""
