@@ -60,7 +60,104 @@ Uninstall:
 curl -s https://raw.githubusercontent.com/cloudfence/wazuh-utils/main/wazuh-agent-macos-install.sh | sudo bash -s uninstall
 ```
 
-### Option B – Clone the repository
+---
+
+## Using Environment Variables (Automated Deployment)
+
+The installation scripts support **environment variables** to allow **fully automated deployments** without interactive prompts.
+
+This is recommended when deploying agents through:
+
+- automation tools (Ansible, Terraform, etc.)
+- MDM platforms
+- provisioning scripts
+- CI/CD pipelines
+
+### Supported Variables
+
+| Variable | Description |
+|--------|-------------|
+| `WAZUH_MANAGER` | Wazuh manager or worker hostname/IP |
+| `WAZUH_REGISTRATION_SERVER` | Server used for agent enrollment |
+| `WAZUH_AGENT_NAME` | Name assigned to the agent |
+| `WAZUH_AGENT_GROUP` | Group assigned during enrollment |
+| `WAZUH_REGISTRATION_PASSWORD` | Enrollment password (if enabled) |
+
+---
+
+### Example – Linux installation with variables
+
+```bash
+WAZUH_MANAGER=worker1.soc.local \
+WAZUH_REGISTRATION_SERVER=worker1.soc.local \
+WAZUH_AGENT_GROUP=linux \
+WAZUH_AGENT_NAME=$(hostname) \
+curl -s https://raw.githubusercontent.com/cloudfence/wazuh-utils/main/wazuh-agent-linux-install.sh | sudo bash
+```
+
+or using `wget`:
+
+```bash
+WAZUH_MANAGER=worker1.soc.local \
+WAZUH_REGISTRATION_SERVER=worker1.soc.local \
+WAZUH_AGENT_GROUP=linux \
+WAZUH_AGENT_NAME=$(hostname) \
+wget -qO- https://raw.githubusercontent.com/cloudfence/wazuh-utils/main/wazuh-agent-linux-install.sh | sudo bash
+```
+
+---
+
+### Example – macOS installation with variables
+
+```bash
+sudo WAZUH_MANAGER=worker1.soc.local \
+WAZUH_REGISTRATION_SERVER=worker1.soc.local \
+WAZUH_AGENT_GROUP=macos \
+WAZUH_AGENT_NAME=$(scutil --get ComputerName) \
+curl -s https://raw.githubusercontent.com/cloudfence/wazuh-utils/main/wazuh-agent-macos-install.sh | sudo bash -s install
+```
+
+---
+
+## Enrollment Flow
+
+When `WAZUH_REGISTRATION_SERVER` is defined:
+
+1. The agent performs **enrollment (port 1515)** with the specified server.
+2. The server registers the agent in the Wazuh cluster.
+3. The agent then establishes the **event communication (port 1514)** with the manager defined in `WAZUH_MANAGER`.
+
+In clustered environments this allows directing agent registrations to **specific worker nodes**.
+
+---
+
+## Example for clustered environments
+
+Example DNS architecture:
+
+```
+agents-linux.soc.local   -> worker1
+agents-macos.soc.local   -> worker2
+agents-windows.soc.local -> worker3
+```
+
+Installation example:
+
+```bash
+WAZUH_MANAGER=agents-linux.soc.local \
+WAZUH_REGISTRATION_SERVER=agents-linux.soc.local \
+curl -s https://raw.githubusercontent.com/cloudfence/wazuh-utils/main/wazuh-agent-linux-install.sh | sudo bash
+```
+
+This approach allows:
+
+- distributing agent load across workers
+- simplifying deployment automation
+- improving cluster scalability
+
+---
+
+## Option B – Clone the repository
 
 ```bash
 git clone https://github.com/cloudfence/wazuh-utils.git
